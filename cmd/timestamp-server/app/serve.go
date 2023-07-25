@@ -100,8 +100,14 @@ var serveCmd = &cobra.Command{
 		host := viper.GetString("host")
 		port := int(viper.GetUint("port"))
 		scheme := viper.GetStringSlice("scheme")
+		httpPingOnly = viper.GetBool("http-ping-only") // serve only /ping in the http server
 
-		server := server.NewRestAPIServer(host, port, scheme, readTimeout, writeTimeout)
+		var server http.Server // FIXME
+		if scheme == "http" && httpPingOnly {
+			server = server.NewPingServer(host, port, readTimeout, writeTimeout)
+		} else {
+			server := server.NewRestAPIServer(host, port, scheme, readTimeout, writeTimeout)
+		}
 		defer func() {
 			if err := server.Shutdown(); err != nil {
 				log.Logger.Error(err)

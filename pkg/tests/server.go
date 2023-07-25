@@ -16,6 +16,7 @@
 package tests
 
 import (
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -34,6 +35,7 @@ func createServer(t *testing.T) string {
 	t.Cleanup(server.Close)
 
 	// verify the server's health
+	log.Printf("DMDEBUG server.URL: %s", server.URL)
 	response, err := http.Get(server.URL + "/ping")
 	if err != nil || response.StatusCode != 200 {
 		t.Fatalf("unexpected error starting up server - status code: %d, err: %v", response.StatusCode, err)

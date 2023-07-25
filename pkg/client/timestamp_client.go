@@ -29,7 +29,6 @@ func GetTimestampClient(timestampServerURL string, opts ...Option) (*client.Time
 		return nil, err
 	}
 	o := makeOptions(opts...)
-
 	rt := httptransport.New(url.Host, client.DefaultBasePath, []string{url.Scheme})
 	// Input to server
 	rt.Producers["application/timestamp-query"] = runtime.ByteStreamProducer()
